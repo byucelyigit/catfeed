@@ -1,0 +1,84 @@
+<html>
+
+
+	<head>
+		<title>ESP8266 LED Control</title>
+		<style>
+				.commandButton {
+				  border: none;
+				  color: white;
+				  padding: 15px 32px;
+				  text-align: center;
+				  text-decoration: none;
+				  display: inline-block;
+				  font-size: 600%;
+				  margin: 4px 2px;
+				  width: 100%;
+				  height: 20%;
+				  cursor: pointer;
+				}
+				p.normal
+				{
+					text-decoration: none;
+					font-size: 16px;
+					color:black;
+					font-family:verdana;
+				}
+				</style>		
+	</head>
+	<body>
+	
+	<!-- in the <button> tags below the ID attribute is the value sent to the arduino -->
+	
+	<button id="11" class="commandButton" style="background-color: #4CAF50" onclick="loadXMLDoc();">StarT</button><br>
+	<button id="12" class="commandButton" style="background-color: #4B25D4" onclick="loadXMLDoc();">Stop</button><br>
+	<button id="13" class="commandButton" style="background-color: rgb(252, 122, 15)" onclick="loadXMLDoc(14);">Set Current Time</button><br>
+	<button id="13" class="commandButton" style="background-color: rgb(109, 248, 44)"" onclick="loadXMLDoc(16);">Set Alarm</button><br>	
+	<input  id="Code" type="text" name="Code" value="2200">
+	<div id="ResponseDiv" class="led"></div>
+	<br>
+
+		
+	<script type="text/javascript">
+
+		function n(n){
+    		return n > 9 ? "" + n: "0" + n;
+		}
+
+		function loadXMLDoc(mode) {
+			var xmlhttp = new XMLHttpRequest();
+			//alert('test');
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+				   if (xmlhttp.status == 200) {
+					document.getElementById("ResponseDiv").innerHTML = xmlhttp.responseText;
+					//alert(xmlhttp.responseText);
+				   }
+				   else if (xmlhttp.status == 400) {
+					  alert('There was an error 400');
+				   }
+				   else {
+					   alert('something else other than 200 was returned' + xmlhttp.responseText + xmlhttp.status);
+				   }
+				}
+			};
+			var code = "";
+			switch(mode){
+				case 14:
+					//set current time yyyymmddhhmm  14201901130023   11-01-2019 00:23
+					var d = new Date();
+					code = "14" + d.getFullYear() + n(d.getMonth()+1) + n(d.getDate()) + n(d.getHours()) + n(d.getMinutes());
+					//alert(code);
+					break;
+				case 16:
+					//set alarm ssmm 161345 13:45 alarm on.
+					code = "16" + document.getElementById('Code').value;
+			}
+
+
+			xmlhttp.open("GET", "http://192.168.2.40:80/?pin=" + code, true);
+			xmlhttp.send();
+		}
+		</script>
+	</body>
+</html>

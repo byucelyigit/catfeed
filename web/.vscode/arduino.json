@@ -1,0 +1,8 @@
+{
+    "sketch": "..\\esp8266_stable_command_reciever_class\\esp8266_stable_command_reciever_class.ino",
+    "port": "COM3",
+    "board": "arduino:avr:mega",
+    "output": "../build",
+    "configuration": "cpu=atmega2560",
+    "programmer": "AVR ISP"
+}
