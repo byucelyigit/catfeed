@@ -30,10 +30,10 @@
 	
 	<!-- in the <button> tags below the ID attribute is the value sent to the arduino -->
 	
-	<button id="11" class="commandButton" style="background-color: #4CAF50" onclick="loadXMLDoc();">Start</button><br>
-	<button id="12" class="commandButton" style="background-color: #4B25D4" onclick="loadXMLDoc();">Stop</button><br>
+	<button id="11" class="commandButton" style="background-color: #4CAF50" onclick="loadXMLDoc(30);">Start</button><br>
+	<button id="12" class="commandButton" style="background-color: #4B25D4" onclick="loadXMLDoc(31);">Stop</button><br>
 	<button id="13" class="commandButton" style="background-color: rgb(252, 122, 15)" onclick="loadXMLDoc(14);">Set Current Time</button><br>
-	<button id="13" class="commandButton" style="background-color: rgb(109, 248, 44)" onclick="loadXMLDoc(16);">Set Alarm</button><br>	
+	<button id="14" class="commandButton" style="background-color: rgb(109, 248, 44)" onclick="loadXMLDoc(16);">Set Alarm</button><br>	
 	<input  id="Code" type="text" name="Code" value="2200">
 	<div id="ResponseDiv" class="led"></div>
 	<br>
@@ -64,6 +64,7 @@
 			};
 			var code = "";
 			switch(mode){
+				
 				case 14:
 					//set current time yyyymmddhhmm  14201901130023   11-01-2019 00:23
 					var d = new Date();
@@ -73,6 +74,17 @@
 				case 16:
 					//set alarm ssmm 161345 13:45 alarm on.
 					code = "16" + document.getElementById('Code').value;
+					break;
+				case 30:
+					//start
+					code = "30";
+					break;					
+				case 31:
+					//start
+					code = "31";
+					break;
+
+
 			}
 
 
