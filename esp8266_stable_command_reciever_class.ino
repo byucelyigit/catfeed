@@ -180,19 +180,7 @@ class Clock
       return  saatformat;
     }
 
-    String formatDigit(int number)
-    {
-      String r="";
-      if (number<10)
-      {
-        r = "0"+number;
-      }
-      else
-      { 
-        r= number;
-      }
-      return r;
-    }
+
 
     void PrintTime()
     {
@@ -209,7 +197,7 @@ class Clock
       //         t.hr, t.min, t.sec);
       //Serial.println(buffull);
       lcd.home ();
-      lcd.print("A1 " + formatDigit(alarm_hour)+":"+formatDigit(alarm_min));      
+      lcd.print("A1 " + formatDigit(alarm_hour)+ ":" + formatDigit(alarm_min));      
       lcd.setCursor ( 0, 1 );
       lcd.print(SaatFormat(t));
       //if (showdot)
@@ -225,6 +213,21 @@ class Clock
       //Serial.println(t.sec);
       //Serial.println("PrintTime end");
     }
+
+    String formatDigit(int number)
+    {
+      String r="00";
+      if (number<10)
+      {
+        r = "0"+ String(number);
+      }
+      else
+      { 
+        r = String(number);
+      }
+      return r;
+    }
+
 
     void SetTime(int year, int month, int day, int hour, int min)
     {
@@ -541,7 +544,7 @@ int deviceStatus = 8;
 long previousMotorMillis = 0;
 int motorForwardInterval = 1500;
 int motorBackwardInterwal = 300;
-int maxRepeatCount = 10;
+int maxRepeatCount = 50;
 int repeatCount = 0;
 int motorMainMode = 0;
 int motorSubMode = 0;
