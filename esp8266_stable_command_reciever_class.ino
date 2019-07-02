@@ -33,6 +33,8 @@ class Clock
     long alarm_hour = 0;
     long alarm_min = 0;
     bool alarm_fired = false;
+    long alarm2_hour = 0;
+    long alarm2_min = 0;
     bool showdot = true;
     long previousMillis = 0;
     int clockinterval = 1000;
@@ -138,6 +140,15 @@ class Clock
       Serial.println(alarm_min);
     }
 
+    void SetAlarm2(int hour, int minute)
+    {
+      Serial.println("SetAlarm2");
+      alarm2_hour = hour;
+      alarm2_min = minute;
+      Serial.println(alarm_min);
+    }
+
+
     void Button1Press()
     {
       Serial.println("Button1Press");
@@ -208,7 +219,7 @@ class Clock
       //{
         //lcd.print(t.hr);
       //}
-      //display.showNumberDecEx(alarm_hour, (0x80 >> 1), true, 2, 0);
+      //display.showNumberDecEx(1, (0x80 >> 1), true, 2, 0);
       //showdot = !showdot;
       //Serial.println(t.sec);
       //Serial.println("PrintTime end");
@@ -263,7 +274,7 @@ class Clock
           //Time t = rtc->time();
          //alarm kontrolü yapmak için burası uygun bir yer olabilir.
          Time t = rtc->time();
-         if(t.hr==alarm_hour && t.min == alarm_min)
+         if((t.hr==alarm_hour && t.min == alarm_min) || (t.hr==alarm2_hour && t.min == alarm2_min))
          {
           if(!alarm_fired)
           {
@@ -538,6 +549,8 @@ class Webserver
 bool armed = false;
 long alarm_min;
 long alarm_hour;
+long alarm2_min;
+long alarm2_hour;
 bool connectedDevice = false;
 int deviceStatus = 8;
 
@@ -569,7 +582,7 @@ String ServerResponse(String PinValue)
   content += "Led pin is now: ";
   content += PinValue + "\r\n";
   content += "Alarm Saati: ";
-  content += String(alarm_hour) + ":" + String(alarm_min);
+  content += String(1) + ":" + String(alarm_min);
   content += "<br><br>\r\n";
   content += "Click <a href=\"/?pin=12OFF\">here</a> turn the LED Off<br>\r\n";
   content += "Click <a href=\"/?pin=13ON\">here</a> turn the LED On<br>\r\n";
@@ -917,8 +930,26 @@ void SetAlarms(String msg)
   Serial.println(hour);
   Serial.println(minute);
   c.SetAlarm(hour, minute);
+
   //EEPROM.write(0, hour);
   //EEPROM.write(1, minute);
+}
+
+void SetAlarm2(String msg)
+{ 
+  Serial.println("Alarm Message:" + msg);
+  int alarmInt = msg.toInt();
+  int hour = alarmInt/100;
+  int minute = alarmInt - (hour * 100);
+  alarm2_hour = hour;
+  alarm2_min = minute;
+  //LcdMessage("A:" + String(hour) + ":" + String(minute));
+  Serial.println(hour);
+  Serial.println(minute);
+  c.SetAlarm2(hour, minute);
+
+  //EEPROM.write(3, hour);
+  //EEPROM.write(4, minute);
 }
 
 void SetAlarmOn()
